@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>参加者ガイドブック | 当日資料を秒で作る #08</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --grad-start: #FF5757;
+      --grad-end: #8C52FF;
+      --primary: #A51E6D;
+      --primary-mid: #D9558E;
+      --primary-light: #F6E9F0;
+      --primary-lighter: #fdf3f9;
+      --text: #333333;
+      --text-muted: #858585;
+      --bg: #FFFFFF;
+      --bg-alt: #F9F9F9;
+      --border: #EBEBEB;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-hover: 0 8px 40px rgba(165,30,109,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    /* ===== スクロールプログレスバー ===== */
+    .scroll-bar {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+      z-index: 1000;
+      transition: width 0.1s;
+    }
+
+    /* ===== ナビゲーション ===== */
+    #mainNav {
+      position: fixed; top: 3px; left: 0; right: 0; z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    #mainNav.scrolled {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .nav-logo {
+      font-size: 14px; font-weight: 700; color: var(--bg);
+      text-decoration: none; letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+    #mainNav.scrolled .nav-logo { color: var(--primary); }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #mainNav.scrolled .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover, #mainNav.scrolled .nav-links a:hover { color: var(--primary); }
+
+    @media (max-width: 768px) {
+      #mainNav { padding: 16px 20px; }
+      .nav-links { display: none; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #2a0a1a 0%, #4a1535 40%, #3a1580 100%);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 120px 24px 80px;
+    }
+    .hero-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.25;
+      animation: float 8s ease-in-out infinite;
+    }
+    .hero-blob-1 {
+      width: 500px; height: 500px;
+      background: var(--grad-start);
+      top: -100px; left: -100px;
+    }
+    .hero-blob-2 {
+      width: 400px; height: 400px;
+      background: var(--grad-end);
+      bottom: -80px; right: -80px;
+      animation-delay: -4s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-24px) scale(1.04); }
+    }
+    .hero-inner {
+      max-width: 900px; margin: 0 auto;
+      position: relative; z-index: 1;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.9);
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 6px 20px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700; color: #fff;
+      line-height: 1.3; margin-bottom: 24px;
+      word-break: keep-all;
+    }
+    .hero h1 .accent {
+      background: linear-gradient(90deg, #FFB3B3, #D4A0FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 16px; color: rgba(255,255,255,0.75);
+      max-width: 560px; margin: 0 auto 48px;
+      line-height: 1.8;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 16px;
+    }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 50px;
+      background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+      color: #fff; font-size: 15px; font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(255,87,87,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-hero-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(255,87,87,0.5);
+    }
+    .btn-hero-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 50px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.85);
+      font-size: 15px; font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-hero-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.6);
+    }
+    .hero-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 64px;
+    }
+    @media (max-width: 768px) {
+      .hero-cards { grid-template-columns: 1fr; }
+    }
+    .hero-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: left;
+      backdrop-filter: blur(8px);
+    }
+    .hero-card-icon {
+      font-size: 28px; color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .hero-card h3 {
+      font-size: 15px; font-weight: 700; color: #fff;
+      margin-bottom: 6px;
+    }
+    .hero-card p {
+      font-size: 12px; color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    /* ===== ウェーブ ===== */
+    .wave { line-height: 0; }
+    .wave svg { display: block; width: 100%; height: 80px; }
+
+    /* ===== 共通セクション ===== */
+    section { padding: 80px 0; }
+    .section-inner {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-eyebrow {
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--primary);
+      text-transform: uppercase; margin-bottom: 8px;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700; color: var(--text);
+      margin-bottom: 12px; word-break: keep-all;
+    }
+    .section-title .accent { color: var(--primary); }
+    .section-lead {
+      font-size: 15px; color: var(--text-muted);
+      margin-bottom: 48px; max-width: 640px;
+      line-height: 1.8;
+    }
+
+    /* ===== フェードイン ===== */
+    .fi {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fi.visible { opacity: 1; transform: translateY(0); }
+    .fi.d1 { transition-delay: 0.1s; }
+    .fi.d2 { transition-delay: 0.2s; }
+    .fi.d3 { transition-delay: 0.3s; }
+    .fi.d4 { transition-delay: 0.4s; }
+
+    /* ===== セットアップ ===== */
+    #setup { background: var(--bg-alt); }
+
+    .setup-steps {
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .setup-step {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex; gap: 24px; align-items: flex-start;
+      box-shadow: var(--shadow);
+    }
+    .step-num {
+      width: 40px; height: 40px; min-width: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+      color: #fff;
+      font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-body { flex: 1; }
+    .step-body h3 {
+      font-size: 16px; font-weight: 700;
+      margin-bottom: 8px; color: var(--text);
+    }
+    .step-body p {
+      font-size: 14px; color: var(--text-muted);
+      margin-bottom: 12px; line-height: 1.7;
+    }
+    .step-note {
+      font-size: 12px; color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* ===== コードブロック（コピー可） ===== */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .code-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .code-lang {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      font-family: monospace; letter-spacing: 0.05em;
+    }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,0.1);
+      border: none; border-radius: 6px;
+      color: rgba(255,255,255,0.7);
+      font-size: 12px; font-weight: 500;
+      padding: 4px 10px; cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: background 0.2s, color 0.2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+    .copy-btn.copied { background: #4CAF50; color: #fff; }
+    .code-body {
+      padding: 16px;
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      font-size: 14px;
+      color: var(--code-text);
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* ===== プロンプトブロック ===== */
+    .prompt-block {
+      background: var(--code-bg);
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .prompt-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(165,30,109,0.2);
+    }
+    .prompt-label {
+      font-size: 12px; font-weight: 700;
+      color: #D4A0FF; letter-spacing: 0.08em;
+    }
+    .prompt-body {
+      padding: 20px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 14px; line-height: 1.8;
+      color: #f0d6f5;
+      white-space: pre-wrap;
+    }
+    .prompt-var {
+      color: #FFB3B3;
+      background: rgba(255,179,179,0.15);
+      padding: 1px 6px; border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* ===== スライド/サイト作成セクション ===== */
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .how-step {
+      background: var(--primary-lighter);
+      border: 1px solid var(--primary-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+    }
+    .how-step-num {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+      color: #fff; font-size: 14px; font-weight: 700;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .how-step h4 {
+      font-size: 13px; font-weight: 700;
+      color: var(--primary); margin-bottom: 4px;
+    }
+    .how-step p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 48px 0;
+    }
+
+    .tip-box {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .tip-box .material-icons {
+      color: var(--primary); font-size: 20px; margin-top: 2px; min-width: 20px;
+    }
+    .tip-box p { font-size: 13px; color: var(--text); line-height: 1.7; }
+
+    /* ===== NotebookLM アコーディオン ===== */
+    #notebooklm { background: var(--bg-alt); }
+
+    .accordion {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: var(--shadow);
+    }
+    .accordion-trigger {
+      width: 100%;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 24px 28px;
+      background: none; border: none;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: background 0.2s;
+    }
+    .accordion-trigger:hover { background: var(--primary-lighter); }
+    .accordion-trigger-left {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .accordion-icon {
+      width: 40px; height: 40px; min-width: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .accordion-icon .material-icons { color: #fff; font-size: 20px; }
+    .accordion-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .accordion-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .accordion-arrow {
+      color: var(--primary); font-size: 24px;
+      transition: transform 0.3s;
+    }
+    .accordion-arrow.open { transform: rotate(180deg); }
+    .accordion-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease;
+      border-top: 1px solid transparent;
+    }
+    .accordion-body.open {
+      max-height: 2000px;
+      border-top-color: var(--border);
+    }
+    .accordion-content {
+      padding: 28px;
+    }
+    .nb-steps { display: flex; flex-direction: column; gap: 24px; }
+    .nb-step {
+      display: flex; gap: 20px; align-items: flex-start;
+    }
+    .nb-step-num {
+      width: 28px; height: 28px; min-width: 28px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nb-step-body h4 {
+      font-size: 15px; font-weight: 700; color: var(--text);
+      margin-bottom: 6px;
+    }
+    .nb-step-body p {
+      font-size: 13px; color: var(--text-muted);
+      line-height: 1.7; margin-bottom: 8px;
+    }
+
+    /* ===== スキル配布 ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, transform 0.2s;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .skill-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+    .skill-card-top {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .skill-badge {
+      width: 40px; height: 40px; min-width: 40px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .skill-badge .material-icons { color: var(--primary); font-size: 20px; }
+    .skill-name {
+      font-size: 15px; font-weight: 700; color: var(--text);
+    }
+    .skill-trigger {
+      font-size: 11px; color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px; border-radius: 4px;
+      font-family: monospace; margin-top: 2px;
+      display: inline-block;
+    }
+    .skill-desc {
+      font-size: 13px; color: var(--text-muted);
+      line-height: 1.6; flex: 1;
+    }
+
+    /* ===== 次のステップ ===== */
+    #next { background: linear-gradient(135deg, #2a0a1a 0%, #3a1580 100%); }
+    .next-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .next-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+    .next-card .material-icons { color: rgba(255,255,255,0.6); margin-bottom: 12px; display: block; }
+    .next-card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .next-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+    #next .section-eyebrow { color: #D4A0FF; }
+    #next .section-title { color: #fff; }
+    #next .section-title .accent {
+      background: linear-gradient(90deg, #FFB3B3, #D4A0FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    #next .section-lead { color: rgba(255,255,255,0.6); }
+
+    /* ===== フッター ===== */
+    footer {
+      background: #1a0a11;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+    }
+    footer span { color: var(--primary-mid); }
+
+    /* ===== パスガイド ===== */
+    .path-guide {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 16px;
+      box-shadow: var(--shadow);
+    }
+    .path-guide-header {
+      padding: 16px 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .path-guide-title {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .path-guide-title .material-icons { font-size: 16px; color: var(--primary); }
+    .path-os-tabs {
+      display: flex; gap: 0;
+    }
+    .path-os-tab {
+      padding: 8px 20px;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-muted);
+      border: none; background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .path-os-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .path-os-panel { display: none; padding: 20px; }
+    .path-os-panel.active { display: block; }
+    .path-method {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .path-method:last-child { border-bottom: none; padding-bottom: 0; }
+    .path-method-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 4px;
+      white-space: nowrap; margin-top: 2px;
+    }
+    .path-method-body { flex: 1; }
+    .path-method-body p {
+      font-size: 13px; color: var(--text); line-height: 1.7;
+      margin-bottom: 4px;
+    }
+    .path-method-body .kbd {
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .path-method-body kbd {
+      display: inline-block;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-bottom: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 6px;
+      color: var(--text);
+      font-family: monospace;
+    }
+    .path-method-note {
+      font-size: 12px; color: var(--text-muted); margin-top: 4px;
+    }
+    .folder-suggest {
+      background: var(--primary-lighter);
+      border: 1px solid var(--primary-light);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-top: 16px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .folder-suggest .material-icons { color: var(--primary); font-size: 18px; margin-top: 2px; }
+    .folder-suggest p { font-size: 13px; line-height: 1.7; color: var(--text); }
+
+    /* ===== ユーティリティ ===== */
+    .mt-24 { margin-top: 24px; }
+    .mt-16 { margin-top: 16px; }
+    .label-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 4px 12px; border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .label-tag .material-icons { font-size: 14px; }
+
+    @media (max-width: 768px) {
+      section { padding: 48px 0; }
+      .setup-step { flex-direction: column; }
+      .nb-step { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- スクロールプログレスバー -->
+  <div class="scroll-bar" id="scrollBar"></div>
+
+  <!-- ナビゲーション -->
+  <nav id="mainNav">
+    <a href="#" class="nav-logo">Claude Code 勉強会 #08</a>
+    <ul class="nav-links">
+
+      <li><a href="#slides">スライド作成</a></li>
+      <li><a href="#site">サイト作成</a></li>
+      <li><a href="#notebooklm">NotebookLM</a></li>
+      <li><a href="#skills">スキル配布</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-inner">
+      <span class="hero-eyebrow">Claude Code 勉強会 #08 — 当日資料を秒で作る</span>
+      <h1>プロンプト1本で<span class="accent">スライドもサイト</span>も作れる<br>ハンズオンの全手順をここに</h1>
+      <p class="hero-sub">企画書を渡すだけで、スライドとタイムラインが自動生成される仕組みを今日から使えます。このページのプロンプトをコピーしてすぐ試してみましょう。</p>
+      <div class="hero-actions">
+        <a href="#slides" class="btn-hero-primary">
+          <span class="material-icons">slideshow</span>
+          スライドを作る
+        </a>
+        <a href="#notebooklm" class="btn-hero-secondary">
+          <span class="material-icons">auto_awesome</span>
+          NotebookLM連携
+        </a>
+      </div>
+      <div class="hero-cards">
+        <div class="hero-card">
+          <span class="material-icons hero-card-icon">slideshow</span>
+          <h3>スライド作成</h3>
+          <p>企画書 → NotebookLM経由でスライドを自動生成</p>
+        </div>
+        <div class="hero-card">
+          <span class="material-icons hero-card-icon">web</span>
+          <h3>サイト・タイムライン</h3>
+          <p>企画書 → タブ付きHTMLページを1ファイルで出力</p>
+        </div>
+        <div class="hero-card">
+          <span class="material-icons hero-card-icon">auto_awesome</span>
+          <h3>NotebookLM連携</h3>
+          <p>CLIでNotebookLMと繋ぎ、デザインルールを反映させる</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- スライド作成 -->
+  <section id="slides">
+    <div class="section-inner">
+      <span class="section-eyebrow fi">Step 1</span>
+      <h2 class="section-title fi"><span class="accent">スライド</span>を作る</h2>
+      <p class="section-lead fi">企画書ファイルのパスをプロンプトに貼り付けて送るだけで、NotebookLM経由でデザインルールが反映されたスライドが生成されます。</p>
+
+      <div class="how-steps fi">
+        <div class="how-step">
+          <div class="how-step-num">1</div>
+          <h4>企画書を用意する</h4>
+          <p>Markdownファイル形式の企画書のパスを確認する</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">2</div>
+          <h4>Claude Codeを開く</h4>
+          <p>ターミナルで <code style="font-size:11px;">claude</code> を実行して起動する</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">3</div>
+          <h4>プロンプトを送る</h4>
+          <p>下記プロンプトをコピーしてパスを書き換えて送信</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">4</div>
+          <h4>PDFが生成される</h4>
+          <p>NotebookLMがスライドを生成し、PDFでダウンロードされる</p>
+        </div>
+      </div>
+
+      <div class="prompt-block fi">
+        <div class="prompt-header">
+          <span class="prompt-label">
+            <span class="material-icons" style="font-size:14px;vertical-align:middle;">auto_awesome</span>
+            スライド作成プロンプト
+          </span>
+          <button class="copy-btn" id="copySlidePrompt" onclick="copyPrompt('slidePromptText', this)">
+            <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+          </button>
+        </div>
+        <div class="prompt-body" id="slidePromptText"><span class="prompt-var">[企画書ファイルのパス]</span>の企画書をもとに、スライドを作成してください</div>
+      </div>
+
+      <div class="path-guide fi mt-24">
+        <div class="path-guide-header">
+          <div class="path-guide-title">
+            <span class="material-icons">folder_open</span>
+            ファイルパスのコピー方法
+          </div>
+          <div class="path-os-tabs">
+            <button class="path-os-tab active" onclick="switchOsTab(this, 'slides-mac')">Mac</button>
+            <button class="path-os-tab" onclick="switchOsTab(this, 'slides-win')">Windows</button>
+          </div>
+        </div>
+        <div class="path-os-panel active" id="slides-mac">
+          <div class="folder-suggest">
+            <span class="material-icons">create_new_folder</span>
+            <p><strong>フォルダの準備:</strong> デスクトップや書類フォルダに <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:12px;">Claude Code勉強会</code> フォルダを作り、企画書を入れておくとパスが分かりやすくなります。<br>例: <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:12px;">~/Desktop/Claude Code勉強会/企画書.md</code></p>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法1</span>
+            <div class="path-method-body">
+              <p>Finderでファイルを選択し、キーボードショートカットでコピー</p>
+              <p class="kbd"><kbd>Option</kbd> + <kbd>Command</kbd> + <kbd>C</kbd></p>
+              <p class="path-method-note">クリップボードにフルパスがコピーされます。そのままプロンプトに貼り付けてください。</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法2</span>
+            <div class="path-method-body">
+              <p>Finderでファイルを右クリック → <kbd>Option</kbd> キーを押しながらメニューを開く</p>
+              <p class="path-method-note">「"ファイル名"をコピー」が「"ファイル名"のパス名をコピー」に変わります。</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法3</span>
+            <div class="path-method-body">
+              <p>ターミナルを開き、Finderからファイルをドラッグ&ドロップする</p>
+              <p class="path-method-note">ターミナルのカーソル位置にパスが自動入力されます。</p>
+            </div>
+          </div>
+        </div>
+        <div class="path-os-panel" id="slides-win">
+          <div class="folder-suggest">
+            <span class="material-icons">create_new_folder</span>
+            <p><strong>フォルダの準備:</strong> デスクトップに <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:12px;">Claude Code勉強会</code> フォルダを作り、企画書を入れておくとパスが分かりやすくなります。<br>例: <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:12px;">C:\Users\[名前]\Desktop\Claude Code勉強会\企画書.md</code></p>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法1</span>
+            <div class="path-method-body">
+              <p>エクスプローラーでファイルを <kbd>Shift</kbd> + 右クリック → 「パスとしてコピー」</p>
+              <p class="path-method-note">引用符（"）付きでコピーされます。プロンプトに貼り付けた後、引用符は不要であれば削除してください。</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法2</span>
+            <div class="path-method-body">
+              <p>エクスプローラーのアドレスバーをクリック → フルパスが表示されるのでコピー</p>
+              <p class="path-method-note">ファイルの入っているフォルダのパスがコピーできます。末尾にファイル名を付け足してください。</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法3</span>
+            <div class="path-method-body">
+              <p>PowerShellを開き、エクスプローラーからファイルをドラッグ&ドロップする</p>
+              <p class="path-method-note">カーソル位置にパスが自動入力されます。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <span class="label-tag fi">
+        <span class="material-icons">info</span>
+        スライドの枚数について
+      </span>
+      <p class="fi" style="font-size:14px;color:var(--text-muted);line-height:1.8;">デフォルトは15枚です。Claude Codeが「何枚にしますか？」と確認してくれます。16枚以上の場合は自動で分割して生成します。<br>生成後はPDFとして保存されます。PowerPoint形式にしたい場合は「.pptxで作って」と追加してください。</p>
+    </div>
+  </section>
+
+  <!-- ウェーブ -->
+  <div class="wave" style="background: #f9f9f9;">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z" fill="#f9f9f9"/>
+    </svg>
+  </div>
+
+  <!-- サイト・タイムライン作成 -->
+  <section id="site" style="background:var(--bg-alt);">
+    <div class="section-inner">
+      <span class="section-eyebrow fi">Step 2</span>
+      <h2 class="section-title fi"><span class="accent">サイト・タイムライン</span>を作る</h2>
+      <p class="section-lead fi">企画書からタブ切り替え付きのHTMLページを1ファイルで生成します。「ホーム」タブには登壇者・資料リンク、「プログラム」タブにはタイムラインが自動で入ります。</p>
+
+      <div class="how-steps fi">
+        <div class="how-step">
+          <div class="how-step-num">1</div>
+          <h4>企画書を用意する</h4>
+          <p>スライドと同じ企画書ファイルをそのまま使える</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">2</div>
+          <h4>Claude Codeを開く</h4>
+          <p>ターミナルで <code style="font-size:11px;">claude</code> を実行して起動する</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">3</div>
+          <h4>プロンプトを送る</h4>
+          <p>下記プロンプトをコピーしてパスを書き換えて送信</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">4</div>
+          <h4>HTMLが保存される</h4>
+          <p>1ファイルのHTMLがイベントページフォルダに保存される</p>
+        </div>
+      </div>
+
+      <div class="prompt-block fi">
+        <div class="prompt-header">
+          <span class="prompt-label">
+            <span class="material-icons" style="font-size:14px;vertical-align:middle;">web</span>
+            サイト・タイムライン作成プロンプト
+          </span>
+          <button class="copy-btn" id="copySitePrompt" onclick="copyPrompt('sitePromptText', this)">
+            <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+          </button>
+        </div>
+        <div class="prompt-body" id="sitePromptText"><span class="prompt-var">[企画書ファイルのパス]</span>の企画書をもとに、サイトを作成してください</div>
+      </div>
+
+      <div class="path-guide fi mt-24">
+        <div class="path-guide-header">
+          <div class="path-guide-title">
+            <span class="material-icons">folder_open</span>
+            ファイルパスのコピー方法（スライド作成と同じ手順です）
+          </div>
+          <div class="path-os-tabs">
+            <button class="path-os-tab active" onclick="switchOsTab(this, 'site-mac')">Mac</button>
+            <button class="path-os-tab" onclick="switchOsTab(this, 'site-win')">Windows</button>
+          </div>
+        </div>
+        <div class="path-os-panel active" id="site-mac">
+          <div class="path-method">
+            <span class="path-method-badge">方法1</span>
+            <div class="path-method-body">
+              <p>Finderでファイルを選択 → <kbd>Option</kbd> + <kbd>Command</kbd> + <kbd>C</kbd></p>
+              <p class="path-method-note">フルパスがクリップボードにコピーされます。</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法2</span>
+            <div class="path-method-body">
+              <p>Finderでファイルを右クリック → <kbd>Option</kbd> キーを押しながら「パス名をコピー」</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法3</span>
+            <div class="path-method-body">
+              <p>ターミナルへファイルをドラッグ&ドロップ</p>
+            </div>
+          </div>
+        </div>
+        <div class="path-os-panel" id="site-win">
+          <div class="path-method">
+            <span class="path-method-badge">方法1</span>
+            <div class="path-method-body">
+              <p><kbd>Shift</kbd> + 右クリック → 「パスとしてコピー」</p>
+              <p class="path-method-note">引用符が付いてコピーされます。必要に応じて削除してください。</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法2</span>
+            <div class="path-method-body">
+              <p>エクスプローラーのアドレスバーをクリック → パスをコピー</p>
+            </div>
+          </div>
+          <div class="path-method">
+            <span class="path-method-badge">方法3</span>
+            <div class="path-method-body">
+              <p>PowerShellへファイルをドラッグ&ドロップ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-box fi mt-16">
+        <span class="material-icons">info</span>
+        <p>日時・会場・登壇者名などが企画書に書かれていない場合、Claude Codeが確認してくれます。アンケートURLや資料URLは後から追加できます（「URLを更新して」と伝えるだけでOK）。</p>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <span class="label-tag fi">
+        <span class="material-icons">web</span>
+        生成されるページの構成
+      </span>
+      <div class="how-steps fi mt-16">
+        <div class="how-step">
+          <div class="how-step-num" style="background:var(--primary-light);color:var(--primary);background-image:none;">H</div>
+          <h4>ホームタブ</h4>
+          <p>登壇者紹介・資料リンク4枠・事前準備チェックリスト</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num" style="background:var(--primary-light);color:var(--primary);background-image:none;">P</div>
+          <h4>プログラムタブ</h4>
+          <p>タイムライン表（時間・セクション名・内容）</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ウェーブ -->
+  <div class="wave" style="background: #fff;">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,0 720,80 1080,40 C1260,20 1380,55 1440,40 L1440,80 L0,80 Z" fill="#fff"/>
+    </svg>
+  </div>
+
+  <!-- NotebookLM詳細 -->
+  <section id="notebooklm">
+    <div class="section-inner">
+      <span class="section-eyebrow fi">Advanced</span>
+      <h2 class="section-title fi">NotebookLM<span class="accent">連携</span>の詳しい使い方</h2>
+      <p class="section-lead fi">ハンズオンでは触れなかった操作の詳細です。自分で試すときの参考にしてください。</p>
+
+      <div class="accordion fi">
+        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+          <div class="accordion-trigger-left">
+            <div class="accordion-icon">
+              <span class="material-icons">auto_awesome</span>
+            </div>
+            <div>
+              <div class="accordion-title">NotebookLM連携スライド生成の全手順</div>
+              <div class="accordion-sub">クリックして展開する</div>
+            </div>
+          </div>
+          <span class="material-icons accordion-arrow">expand_more</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            <div class="nb-steps">
+              <div class="nb-step">
+                <div class="nb-step-num">1</div>
+                <div class="nb-step-body">
+                  <h4>前提確認</h4>
+                  <p>uv・notebooklm CLIのインストールとログインが完了していること（下の「はじめてのセットアップ」を参照）。</p>
+                </div>
+              </div>
+              <div class="nb-step">
+                <div class="nb-step-num">2</div>
+                <div class="nb-step-body">
+                  <h4>スキルを呼び出す</h4>
+                  <p>Claude Codeで <code style="background:#F6E9F0;padding:2px 6px;border-radius:4px;font-size:12px;">/notebooklm-auto</code> と入力するか、「スライドを作って」と話しかけることで自動起動します。</p>
+                  <div class="prompt-block" style="margin-top:12px;">
+                    <div class="prompt-header">
+                      <span class="prompt-label">トリガーフレーズ</span>
+                      <button class="copy-btn" onclick="copyPrompt('nbTriggerText', this)">
+                        <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+                      </button>
+                    </div>
+                    <div class="prompt-body" id="nbTriggerText">スライドを作って</div>
+                  </div>
+                </div>
+              </div>
+              <div class="nb-step">
+                <div class="nb-step-num">3</div>
+                <div class="nb-step-body">
+                  <h4>ノートブックを選択する</h4>
+                  <p>既存のノートブックを使うか、新規作成するかを選びます。新規の場合はノートブック名を指示するとClaude Codeが作成します。</p>
+                </div>
+              </div>
+              <div class="nb-step">
+                <div class="nb-step-num">4</div>
+                <div class="nb-step-body">
+                  <h4>スライドが生成される</h4>
+                  <p>CUSTOMIZE.mdに定義されたデザインルール（カラー・フォント・ビジュアルパターン）が反映されたスライドがNotebookLMで生成されます。生成には数分かかります。</p>
+                </div>
+              </div>
+              <div class="nb-step">
+                <div class="nb-step-num">5</div>
+                <div class="nb-step-body">
+                  <h4>PDFをダウンロードする</h4>
+                  <p>生成完了後、カレントディレクトリにPDFとして保存されます。ファイル名は <code style="background:#F6E9F0;padding:2px 6px;border-radius:4px;font-size:12px;">slides_YYYYMMDD.pdf</code> 形式です。</p>
+                </div>
+              </div>
+              <div class="nb-step">
+                <div class="nb-step-num">6</div>
+                <div class="nb-step-body">
+                  <h4>デザインをカスタマイズする（応用）</h4>
+                  <p><code style="background:#F6E9F0;padding:2px 6px;border-radius:4px;font-size:12px;">~/.claude/skills/notebooklm-auto/CUSTOMIZE.md</code> を編集することで、ビジュアルパターンや色の使い方を変更できます。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- セットアップ アコーディオン -->
+      <div class="accordion fi" style="margin-top:16px;">
+        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+          <div class="accordion-trigger-left">
+            <div class="accordion-icon" style="background:linear-gradient(135deg,#858585,#ADADAD);">
+              <span class="material-icons">settings</span>
+            </div>
+            <div>
+              <div class="accordion-title">はじめてのセットアップ（講義後に各自で実施）</div>
+              <div class="accordion-sub">uv・notebooklm CLI・ログインの3ステップ — クリックして展開する</div>
+            </div>
+          </div>
+          <span class="material-icons accordion-arrow">expand_more</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            <div class="setup-steps">
+              <div class="setup-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <h3>uv をインストールする</h3>
+                  <p>Python パッケージ管理ツールです。まず uv が入っているか確認します。</p>
+                  <div class="code-block">
+                    <div class="code-header">
+                      <span class="code-lang">確認コマンド</span>
+                      <button class="copy-btn" onclick="copyCode(this, 'which uv')">
+                        <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+                      </button>
+                    </div>
+                    <div class="code-body">which uv</div>
+                  </div>
+                  <p class="step-note">「command not found」と表示された場合は、以下でインストールしてください。</p>
+                  <div class="code-block" style="margin-top:8px;">
+                    <div class="code-header">
+                      <span class="code-lang">インストール（Mac）</span>
+                      <button class="copy-btn" onclick="copyCode(this, 'brew install uv')">
+                        <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+                      </button>
+                    </div>
+                    <div class="code-body">brew install uv</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setup-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <h3>notebooklm CLI をインストールする</h3>
+                  <p>コマンドラインからNotebookLMを操作するためのツールです。</p>
+                  <div class="code-block">
+                    <div class="code-header">
+                      <span class="code-lang">インストール</span>
+                      <button class="copy-btn" onclick='copyCode(this, "uv tool install \"notebooklm-py[browser]\"")'>
+                        <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+                      </button>
+                    </div>
+                    <div class="code-body">uv tool install "notebooklm-py[browser]"</div>
+                  </div>
+                  <div class="code-block mt-16">
+                    <div class="code-header">
+                      <span class="code-lang">確認コマンド</span>
+                      <button class="copy-btn" onclick="copyCode(this, 'which notebooklm')">
+                        <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+                      </button>
+                    </div>
+                    <div class="code-body">which notebooklm</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setup-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <h3>NotebookLM にログインする</h3>
+                  <p>ブラウザが起動し、Googleアカウントでの認証が求められます。お使いのGoogleアカウントでログインしてください。</p>
+                  <div class="code-block">
+                    <div class="code-header">
+                      <span class="code-lang">ログイン</span>
+                      <button class="copy-btn" onclick="copyCode(this, 'notebooklm login')">
+                        <span class="material-icons" style="font-size:14px;">content_copy</span>コピー
+                      </button>
+                    </div>
+                    <div class="code-body">notebooklm login</div>
+                  </div>
+                  <div class="tip-box mt-16">
+                    <span class="material-icons">check_circle</span>
+                    <p>ログイン後、<code style="background:#F6E9F0;padding:2px 6px;border-radius:4px;font-size:12px;">notebooklm list</code> を実行してエラーが出なければ準備完了です。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ウェーブ -->
+  <div class="wave" style="background: #f9f9f9;">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z" fill="#f9f9f9"/>
+    </svg>
+  </div>
+
+  <!-- スキル配布 -->
+  <section id="skills" style="background:var(--bg-alt);">
+    <div class="section-inner">
+      <span class="section-eyebrow fi">Download</span>
+      <h2 class="section-title fi">スキルを<span class="accent">受け取る</span></h2>
+      <p class="section-lead fi">今日のハンズオンで使用したスキルファイルを配布します。<code style="font-size:13px;background:#F6E9F0;padding:2px 8px;border-radius:4px;">~/.claude/skills/</code> に配置することで使えるようになります。</p>
+
+      <div class="skills-grid fi">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-badge">
+              <span class="material-icons">auto_awesome</span>
+            </div>
+            <div>
+              <div class="skill-name">notebooklm-auto</div>
+              <div class="skill-trigger">/notebooklm-auto</div>
+            </div>
+          </div>
+          <p class="skill-desc">コンテンツをNotebookLMに渡してスライドを自動生成するスキル。デザインルールはCUSTOMIZE.mdで設定。</p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-badge">
+              <span class="material-icons">web</span>
+            </div>
+            <div>
+              <div class="skill-name">event-page</div>
+              <div class="skill-trigger">「サイトを作成して」</div>
+            </div>
+          </div>
+          <p class="skill-desc">企画書をもとに参加者向けHTMLページを生成するスキル。タブ切り替えナビ付きの1ファイルHTMLを出力。</p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-badge">
+              <span class="material-icons">slideshow</span>
+            </div>
+            <div>
+              <div class="skill-name">real-event-slides</div>
+              <div class="skill-trigger">「スライドを作って」</div>
+            </div>
+          </div>
+          <p class="skill-desc">リアルイベント用のスライド構成案を作成するスキル。勉強会・実践会・トークセッション向けに最適化されたHTML形式。</p>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-badge">
+              <span class="material-icons">palette</span>
+            </div>
+            <div>
+              <div class="skill-name">slide-design.md</div>
+              <div class="skill-trigger">共通デザインルール</div>
+            </div>
+          </div>
+          <p class="skill-desc">全スキル共通のカラー・フォント・余白・デザイン原則が定義されたファイル。<code style="font-size:11px;">~/.claude/skills/shared/</code> に配置する。</p>
+        </div>
+      </div>
+
+      <!-- スキルギャラリー案内 -->
+      <div class="tip-box fi mt-24" style="background:var(--primary-light);border-left-color:var(--primary);">
+        <span class="material-icons" style="color:var(--primary);">open_in_new</span>
+        <p>スキルのダウンロードは <strong>Claude Code 勉強会サイトのスキルギャラリー</strong> から行ってください。<br>
+        ダウンロードしたフォルダを <code style="background:#fff;padding:2px 6px;border-radius:4px;font-size:12px;">~/.claude/skills/</code> に配置することで使えるようになります。</p>
+      </div>
+
+      <div class="tip-box fi mt-24">
+        <span class="material-icons">folder_open</span>
+        <p><strong>配置先:</strong> <code style="background:#F6E9F0;padding:2px 6px;border-radius:4px;font-size:12px;">~/.claude/skills/[スキル名]/</code><br>ターミナルで <code style="background:#F6E9F0;padding:2px 6px;border-radius:4px;font-size:12px;">ls ~/.claude/skills/</code> を実行すると現在のスキル一覧を確認できます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ウェーブ -->
+  <div class="wave" style="background: linear-gradient(135deg, #2a0a1a, #3a1580);">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,0 720,80 1080,40 C1260,20 1380,55 1440,40 L1440,80 L0,80 Z" fill="#2a0a1a"/>
+    </svg>
+  </div>
+
+  <!-- 次のステップ -->
+  <section id="next">
+    <div class="section-inner">
+      <span class="section-eyebrow fi">Next Steps</span>
+      <h2 class="section-title fi">今日から<span class="accent">試せること</span></h2>
+      <p class="section-lead fi">勉強会で学んだことを、まずは1つ自分の業務で試してみましょう。</p>
+      <div class="next-cards fi">
+        <div class="next-card">
+          <span class="material-icons">edit_note</span>
+          <h3>自分の企画書で試す</h3>
+          <p>今日作成した企画書、または手持ちの企画書をそのままプロンプトに渡してみる。</p>
+        </div>
+        <div class="next-card">
+          <span class="material-icons">tune</span>
+          <h3>デザインをカスタマイズする</h3>
+          <p>CUSTOMIZE.md を開いて色やビジュアルパターンを変更し、自分好みのスライドを作る。</p>
+        </div>
+        <div class="next-card">
+          <span class="material-icons">share</span>
+          <h3>Slackでシェアする</h3>
+          <p>「試してみた」報告をSlackに投稿して、チームへの波及を作る。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer>
+    <p>Claude Code 勉強会 #08 — 当日資料を秒で作る<br>
+    <span>SHIFT AI</span> &copy; 2026</p>
+  </footer>
+
+  <script>
+    // ===== スクロールプログレスバー =====
+    const scrollBar = document.getElementById('scrollBar');
+    window.addEventListener('scroll', () => {
+      const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      scrollBar.style.width = p + '%';
+    }, { passive: true });
+
+    // ===== ナビゲーション =====
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ===== フェードイン =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const items = Array.from(document.querySelectorAll('.fi'));
+      const show = el => el.classList.add('visible');
+      if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => { if (e.isIntersecting) { show(e.target); obs.unobserve(e.target); } });
+      }, { threshold: 0.06 });
+      items.forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.92) show(el);
+        else io.observe(el);
+      });
+    });
+
+    // ===== コードコピー =====
+    function copyCode(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="material-icons" style="font-size:14px;">check</span>コピー済み';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // ===== プロンプトコピー =====
+    function copyPrompt(id, btn) {
+      const el = document.getElementById(id);
+      // span.prompt-var のテキストもそのままコピー
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="material-icons" style="font-size:14px;">check</span>コピー済み';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // ===== アコーディオン =====
+    function toggleAccordion(trigger) {
+      const body = trigger.nextElementSibling;
+      const arrow = trigger.querySelector('.accordion-arrow');
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      arrow.classList.toggle('open', !isOpen);
+      const sub = trigger.querySelector('.accordion-sub');
+      sub.textContent = isOpen ? 'クリックして展開する' : 'クリックして閉じる';
+    }
+
+    // ===== OSタブ切り替え =====
+    function switchOsTab(clickedTab, panelId) {
+      const guide = clickedTab.closest('.path-guide');
+      guide.querySelectorAll('.path-os-tab').forEach(t => t.classList.remove('active'));
+      guide.querySelectorAll('.path-os-panel').forEach(p => p.classList.remove('active'));
+      clickedTab.classList.add('active');
+      document.getElementById(panelId).classList.add('active');
+    }
+
+  </script>
+
+</body>
+</html>
