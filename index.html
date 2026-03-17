@@ -714,6 +714,52 @@
       <h2 class="section-title fi"><span class="accent">スライド</span>を作る</h2>
       <p class="section-lead fi">企画書ファイルのパスをプロンプトに貼り付けて送るだけで、NotebookLM経由でデザインルールが反映されたスライドが生成されます。</p>
 
+      <!-- セットアップ -->
+      <div class="fi" style="background:#F6E9F0;border-radius:16px;padding:28px 32px;margin-bottom:40px;">
+        <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:16px;">STEP 0 — スキルのセットアップ（初回のみ）</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#A51E6D;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:4px;">zipファイルをダウンロードする</div>
+              <p style="font-size:13px;color:#555;line-height:1.7;margin:0;">Claude Code勉強会スキルギャラリーのサイトからスキルパックをダウンロードしてください。</p>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#A51E6D;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:4px;">zipを解凍する</div>
+              <p style="font-size:13px;color:#555;line-height:1.7;margin:0;">ダウンロードした <code style="background:#fff;padding:1px 6px;border-radius:4px;font-size:12px;">勉強会スキルパック.zip</code> をダブルクリックして解凍します。</p>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#A51E6D;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:4px;">skillsフォルダを配置する</div>
+              <p style="font-size:13px;color:#555;line-height:1.7;margin:0 0 8px;">解凍したフォルダ内の <code style="background:#fff;padding:1px 6px;border-radius:4px;font-size:12px;">skills/</code> の中身（4つのフォルダ）を、以下のパスに移動またはコピーしてください。</p>
+              <div style="background:#fff;border-radius:8px;padding:10px 14px;font-size:12px;color:#A51E6D;display:flex;flex-direction:column;gap:4px;">
+                <div><strong>Mac:</strong> <code style="font-size:12px;">~/.claude/skills/</code></div>
+                <div><strong>Windows:</strong> <code style="font-size:12px;">C:\Users\[ユーザー名]\.claude\skills\</code></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#A51E6D;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:4px;">サンプル企画書を配置する（企画書がない方）</div>
+              <p style="font-size:13px;color:#555;line-height:1.7;margin:0;">解凍したフォルダ内の <code style="background:#fff;padding:1px 6px;border-radius:4px;font-size:12px;">サンプル企画書/</code> の中のファイルを、使いやすい場所（デスクトップや書類フォルダなど）に移動してください。</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 実行手順 -->
+      <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:16px;" class="fi">STEP 1 — スライドを作る</div>
       <div class="how-steps fi">
         <div class="how-step">
           <div class="how-step-num">1</div>
