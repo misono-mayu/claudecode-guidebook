@@ -665,6 +665,7 @@
       <li><a href="#site">サイト作成</a></li>
       <li><a href="#notebooklm">NotebookLM</a></li>
       <li><a href="#skills">スキル配布</a></li>
+      <li><a href="#customize">カスタマイズ</a></li>
     </ul>
   </nav>
 
@@ -831,6 +832,121 @@
   <div class="wave" style="background: #f9f9f9;">
     <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z" fill="#f9f9f9"/>
+    </svg>
+  </div>
+
+  <!-- カスタマイズ -->
+  <section id="customize" style="background:#f9f9f9;">
+    <div class="section-inner">
+      <span class="section-eyebrow fi">How it works</span>
+      <h2 class="section-title fi">スキルの<span class="accent">仕組みと拡張性</span></h2>
+      <p class="section-lead fi">スライドが作られるまでの流れと、自分好みにカスタマイズできるポイントを紹介します。スキルは誰でも編集・拡張できる設計になっています。</p>
+
+      <!-- フェーズフロー -->
+      <div class="fi" style="display:flex;flex-direction:column;gap:0;margin:48px 0;">
+
+        <!-- Phase 0 -->
+        <div style="display:flex;gap:24px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FF5757,#8C52FF);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">P0</div>
+            <div style="width:2px;flex:1;min-height:40px;background:linear-gradient(to bottom,#8C52FF,#EBEBEB);"></div>
+          </div>
+          <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 28px;flex:1;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:6px;">PHASE 0 — Context Loading</div>
+            <div style="font-size:16px;font-weight:700;color:#333;margin-bottom:10px;">デザイン・ルールの読み込み</div>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 12px;">スキルが起動するとまず共有ファイルを読み込みます。カラー・フォント・余白などのデザイン定義と、出力フォーマットのロジックが読み込まれ、以降の全フェーズに引き継がれます。</p>
+            <div style="background:#F6E9F0;border-radius:8px;padding:12px 16px;font-size:13px;color:#A51E6D;line-height:1.7;"><strong>カスタマイズポイント</strong><br><code style="font-size:12px;background:#fff;padding:1px 6px;border-radius:4px;">~/.claude/skills/shared/slide-design.md</code> を編集するだけで全スキルのデザインベースが一括変更されます。自社ブランドカラーへの変更やフォントの差し替えもここで行います。</div>
+          </div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div style="display:flex;gap:24px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FF5757,#8C52FF);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">P1</div>
+            <div style="width:2px;flex:1;min-height:40px;background:linear-gradient(to bottom,#8C52FF,#EBEBEB);"></div>
+          </div>
+          <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 28px;flex:1;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:6px;">PHASE 1 — ヒアリング・構成精査</div>
+            <div style="font-size:16px;font-weight:700;color:#333;margin-bottom:10px;">種別の選択とスライド骨格の決定</div>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 12px;">「リアルイベント / ウェビナー / 企画書スライド化」を選択し、それぞれに合ったヒアリングを進めます。伝えたいメッセージを1つに絞り、タイムテーブルとスライド構成の骨格を固めます。</p>
+            <div style="background:#F6E9F0;border-radius:8px;padding:12px 16px;font-size:13px;color:#A51E6D;line-height:1.7;"><strong>カスタマイズポイント</strong><br>SKILL.md の Phase 1 を編集して、新しい種別（例：「社内研修」「採用説明会」）を追加できます。種別ごとに異なるヒアリング項目や構成フォーマットを定義するだけで、AIが自動で使い分けます。</div>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div style="display:flex;gap:24px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FF5757,#8C52FF);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">P2</div>
+            <div style="width:2px;flex:1;min-height:40px;background:linear-gradient(to bottom,#8C52FF,#EBEBEB);"></div>
+          </div>
+          <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 28px;flex:1;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:6px;">PHASE 2 — スライド詳細展開 + 自動レビュー</div>
+            <div style="font-size:16px;font-weight:700;color:#333;margin-bottom:10px;">各スライドの中身を記述し、自動レビューで修正</div>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 12px;">骨格をもとに各スライドに「実際に表示するテキスト」と「話す内容」を記述します。1スライド1メッセージの原則を守り「見せる」と「話す」の役割を分離します。完成後はAIが自動でレビューし、問題点を修正してから次へ進みます。</p>
+            <div style="background:#F6E9F0;border-radius:8px;padding:12px 16px;font-size:13px;color:#A51E6D;line-height:1.7;"><strong>カスタマイズポイント</strong><br>Phase 2 のルールに独自の制約を追記できます。さらに、自分の教育思想や伝え方を書いた <code style="font-size:12px;background:#fff;padding:1px 6px;border-radius:4px;">teaching_style.md</code> を Phase 0 で読み込むよう設定すれば、AIがそのスタイルを反映してスライドを展開します。</div>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div style="display:flex;gap:24px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FF5757,#8C52FF);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">P3</div>
+            <div style="width:2px;flex:1;min-height:40px;background:linear-gradient(to bottom,#8C52FF,#EBEBEB);"></div>
+          </div>
+          <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 28px;flex:1;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:6px;">PHASE 3 — 出力フォーマット選択</div>
+            <div style="font-size:16px;font-weight:700;color:#333;margin-bottom:10px;">HTML / PowerPoint / NotebookLM を選択して生成</div>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 12px;">コンテンツが完成したら出力形式を選びます。3形式すべてで同じコンテンツが使われるため、あとから形式を変えることも可能です。PowerPointの場合は参照テンプレート（<code style="font-size:12px;">slide_template.pptx</code>）のデザインが自動で反映されます。</p>
+            <div style="background:#F6E9F0;border-radius:8px;padding:12px 16px;font-size:13px;color:#A51E6D;line-height:1.7;"><strong>カスタマイズポイント</strong><br><code style="font-size:12px;background:#fff;padding:1px 6px;border-radius:4px;">~/.claude/skills/shared/output-formats.md</code> を編集することで出力ロジックを変更できます。<code style="font-size:12px;background:#fff;padding:1px 6px;border-radius:4px;">slide_template.pptx</code> を差し替えれば PowerPoint のデザインを丸ごと変えられます。</div>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div style="display:flex;gap:24px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FF5757,#8C52FF);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">P4</div>
+          </div>
+          <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:24px 28px;flex:1;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.08em;margin-bottom:6px;">PHASE 4 — 確認事項の提示</div>
+            <div style="font-size:16px;font-weight:700;color:#333;margin-bottom:10px;">本番前のチェックリストを自動生成</div>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 12px;">生成後、種別に応じた確認事項リストが自動で出力されます。「時間配分に矛盾はないか」「資料・プロンプトは準備できているか」など、当日に向けた抜け漏れを防ぐチェックが入ります。</p>
+            <div style="background:#F6E9F0;border-radius:8px;padding:12px 16px;font-size:13px;color:#A51E6D;line-height:1.7;"><strong>カスタマイズポイント</strong><br>Phase 4 のチェック項目に、自分がよくやりがちなミスやチーム固有の確認事項を追記できます。過去のイベントで失敗したことを書き加えておけば、次回から自動でリマインドされます。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 拡張例カード -->
+      <div class="section-divider"></div>
+      <h3 class="fi" style="font-size:20px;font-weight:700;color:#333;margin:0 0 8px;padding-left:12px;border-left:4px solid #A51E6D;">自分だけのスキルに育てる</h3>
+      <p class="fi" style="font-size:14px;color:#555;line-height:1.7;margin:0 0 24px;">Phase 0 で読み込むファイルを追加するだけで、AIがあなたの知識・スタイル・過去資産を反映したスライドを作るようになります。</p>
+
+      <div class="fi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:16px;">
+        <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px 22px;">
+          <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.06em;margin-bottom:8px;">過去の企画・構成</div>
+          <p style="font-size:13px;color:#666;line-height:1.7;margin:0;">うまくいった回の構成を <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:11px;">past_events.md</code> にまとめておくと、AIが「前回のどこが良かったか」を反映して次の構成を提案します。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px 22px;">
+          <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.06em;margin-bottom:8px;">話し方・教育思想</div>
+          <p style="font-size:13px;color:#666;line-height:1.7;margin:0;">「参加者が自走できる設計を重視する」などの哲学を <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:11px;">teaching_style.md</code> に書けば、話者ノートや構成に自分らしさが出ます。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px 22px;">
+          <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.06em;margin-bottom:8px;">専門知識・用語集</div>
+          <p style="font-size:13px;color:#666;line-height:1.7;margin:0;">扱うテーマの知識や用語集を <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:11px;">domain_knowledge.md</code> に書いておくと、初心者向けの言い換えや補足スライドが的確になります。</p>
+        </div>
+        <div style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:20px 22px;">
+          <div style="font-size:11px;font-weight:700;color:#A51E6D;letter-spacing:.06em;margin-bottom:8px;">参加者の声・FAQ</div>
+          <p style="font-size:13px;color:#666;line-height:1.7;margin:0;">アンケート結果やよく来る質問を <code style="background:#F6E9F0;padding:1px 5px;border-radius:3px;font-size:11px;">faq.md</code> にまとめると、「つまずきやすいポイント」への言及が構成に自動で入ります。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ウェーブ -->
+  <div class="wave" style="background:var(--bg-alt);">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z" fill="var(--bg-alt)"/>
     </svg>
   </div>
 
